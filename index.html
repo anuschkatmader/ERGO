@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -17,16 +18,18 @@
        <script type="text/javascript">function OptanonWrapper() {}</script> -->
   <!-- ============================================================= -->
 
-  <!-- ============================================================= -->
-  <!-- ONETRUST WEB FORM (UCPM collection point) – production script. -->
-  <!-- Loads the embedded web-form engine; the trigger button in the  -->
-  <!-- offer popup (class "ot-open-webform") shows the form on click.  -->
-  <!-- ============================================================= -->
+  <!-- ===== START: OneTrust Consent Receipt SDK (loader for embedded web forms) ===== -->
+  <script>
+    window.OtSdk = window.OtSdk || function () {
+      (OtSdk.q = OtSdk.q || []).push(arguments);
+    };
+  </script>
   <script
     src="https://privacyportaltrial.onetrust.com/consent-embedded-forms/consent-receipt-scripts/OtFormStub.js"
     data-id="89af9315-196c-45ad-88ea-1b8ec3fe5a51"
     worker="https://consent-api.onetrust.com"
   ></script>
+  <!-- ===== END: OneTrust Consent Receipt SDK ===== -->
 
 
   <!-- Fonts (Google Fonts CDN – no login required) -->
@@ -628,10 +631,10 @@ button#ot-sdk-btn {
   background: rgba(20,20,20,.55);
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
-  opacity: 0; visibility: hidden;
-  transition: opacity .2s ease, visibility .2s ease;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s ease;
 }
-.modal-overlay.open { opacity: 1; visibility: visible; }
+.modal-overlay.open { opacity: 1; pointer-events: auto; }
 
 .modal {
   position: relative;
@@ -653,6 +656,9 @@ button#ot-sdk-btn {
 .modal-body .eyebrow { margin-bottom: .4rem; }
 .modal-body h2 { font-size: 1.4rem; margin-bottom: .4rem; }
 .modal-body .modal-sub { color: var(--ink-soft); font-size: .96rem; margin-bottom: 18px; }
+
+/* OneTrust inline web-form mount: reserves space before the form renders */
+.ot-form-mount { min-height: 40px; }
 
 .modal-close {
   position: absolute; top: 12px; right: 12px; z-index: 3;
@@ -1117,17 +1123,15 @@ input.ot-input-txt {
         <p class="modal-sub">Fordern Sie Ihr persönliches Angebot zur Reiseversicherung an – sicher und DSGVO-konform.</p>
 
         <!-- ============================================================= -->
-        <!-- ONETRUST WEB FORM                                             -->
-        <!-- The name / e-mail / consent fields were removed: the real     -->
-        <!-- form is served by OneTrust. Clicking the button below (class  -->
-        <!-- "ot-open-webform") shows the collection-point web form.       -->
-        <!-- id = the collection-point ID (the stray "ot-" prefix removed).-->
-        <!-- The form is skinned to match this popup via the OneTrust      -->
-        <!-- override CSS in the stylesheet.                               -->
+        <!-- ONETRUST WEB FORM (UCPM collection point)                     -->
+        <!-- The name / e-mail / consent fields were removed: OneTrust      -->
+        <!-- renders the real web form inline into this container.          -->
+        <!-- InstallCP(...) near the end of <body> targets #ot-container    -->
+        <!-- using the collection-point ID b90a1a08-...                     -->
+        <!-- The form is skinned to match this popup via the OneTrust       -->
+        <!-- override CSS in the stylesheet.                                -->
         <!-- ============================================================= -->
-        <button class="ot-open-webform btn btn-primary"
-                id="b90a1a08-78df-4be5-ac3d-2721a404430d"
-                style="width:100%; justify-content:center;">Angebot anfordern</button>
+        <div id="ot-container" class="ot-form-mount"></div>
       </div>
     </div>
   </div>
@@ -1185,5 +1189,39 @@ input.ot-input-txt {
       if (AUTO_OPEN) setTimeout(function () { if (!opened) { opened = true; open(); } }, AUTO_OPEN_DELAY);
     })();
   </script>
+
+  <!-- ===== START: OneTrust web form install (renders the inline form into #ot-container) ===== -->
+  <script>
+  (function () {
+    // Collection point ID for the Reiseversicherung email-signup web form.
+    // To change: update CP_ID to the collection point ID from your OneTrust dashboard.
+    var CP_ID = "b90a1a08-78df-4be5-ac3d-2721a404430d";
+
+    function whenOTReady(callback) {
+      var timer = setInterval(function () {
+        if (window.OneTrust && window.OneTrust.webform && window.OneTrust.webform.InstallCP) {
+          clearInterval(timer);
+          callback();
+        }
+      }, 80);
+    }
+
+    function install() {
+      whenOTReady(function () {
+        OneTrust.webform.InstallCP(CP_ID, {
+          target: "#ot-container"
+        });
+      });
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", install);
+    } else {
+      install();
+    }
+  })();
+  </script>
+  <!-- ===== END: OneTrust web form install ===== -->
 </body>
 </html>
+ 11, 28020 Madrid, Spain 
