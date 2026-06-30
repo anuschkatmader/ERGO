@@ -1,15 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mein Konto – ERGO</title>
-  <meta name="description" content="Mein Konto bei ERGO: Verträge verwalten, Schaden melden und Einwilligungen & Präferenzen anpassen." />
+  <title>ERGO – Versichern heißt verstehen</title>
+  <meta name="description" content="ERGO Versicherungen: Kfz, Hausrat, Leben, Kranken, Rechtsschutz und Reise. Versichern heißt verstehen." />
 
   <!-- ============================================================= -->
   <!-- ONETRUST CMP: paste your data-domain-script tag here.          -->
-  <!-- Same tag as on index.html. Must be the FIRST script in <head>. -->
+  <!-- This must be the FIRST script in <head> so auto-blocking works.-->
   <!-- Replace YOUR-OT-ID with your OneTrust script ID.               -->
   <!--                                                                 -->
   <!-- <script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"
@@ -18,9 +17,24 @@
        <script type="text/javascript">function OptanonWrapper() {}</script> -->
   <!-- ============================================================= -->
 
+  <!-- ============================================================= -->
+  <!-- ONETRUST WEB FORM (UCPM collection point) – production script. -->
+  <!-- Loads the embedded web-form engine; the trigger button in the  -->
+  <!-- offer popup (class "ot-open-webform") shows the form on click.  -->
+  <!-- ============================================================= -->
+  <script
+    src="https://privacyportaltrial.onetrust.com/consent-embedded-forms/consent-receipt-scripts/OtFormStub.js"
+    data-id="89af9315-196c-45ad-88ea-1b8ec3fe5a51"
+    worker="https://consent-api.onetrust.com"
+  ></script>
+
+
+  <!-- Fonts (Google Fonts CDN – no login required) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Relative path so it works on a GitHub Pages subpath -->
   <style>
 /* =========================================================
    ERGO Demo – shared styles
@@ -683,6 +697,76 @@ button#ot-sdk-btn {
 .modal-success h2 { margin-bottom: .3rem; }
 [hidden] { display: none !important; }
 
+/* ---------- OneTrust web form – skin to match the ERGO popup ---------- */
+/* The collection-point form is injected by OneTrust at runtime, so its
+   markup isn't visible here. These rules target OneTrust's typical
+   embedded-form wrappers + generic form elements and restyle them to match
+   the popup (rounded inputs, pill ERGO-red button, brand fonts/links).
+   If your rendered form uses different class names, inspect it and adjust
+   the selectors below. */
+[class*="ot-form"],
+[class*="ot-web-form"],
+.ot-sdk-container[role="dialog"] {
+  font-family: var(--font) !important;
+  color: var(--ink) !important;
+  border-radius: var(--radius-lg) !important;
+}
+
+[class*="ot-form"] h1, [class*="ot-form"] h2,
+[class*="ot-web-form"] h1, [class*="ot-web-form"] h2 {
+  font-family: var(--font) !important;
+  color: var(--ink) !important;
+  letter-spacing: -0.01em !important;
+}
+
+[class*="ot-form"] input[type="text"],
+[class*="ot-form"] input[type="email"],
+[class*="ot-web-form"] input[type="text"],
+[class*="ot-web-form"] input[type="email"],
+input.ot-input-txt {
+  font-family: var(--font) !important;
+  font-size: 1rem !important;
+  padding: 12px 14px !important;
+  border: 1px solid var(--grey-line) !important;
+  border-radius: 10px !important;
+  background: var(--white) !important;
+  color: var(--ink) !important;
+  box-shadow: none !important;
+}
+[class*="ot-form"] input:focus,
+[class*="ot-web-form"] input:focus {
+  outline: 3px solid var(--ergo-red) !important;
+  outline-offset: 2px !important;
+  border-color: var(--ergo-red) !important;
+}
+
+[class*="ot-form"] input[type="checkbox"],
+[class*="ot-web-form"] input[type="checkbox"] {
+  accent-color: var(--ergo-red) !important;
+  width: 17px !important; height: 17px !important;
+}
+
+/* submit / primary buttons inside the OneTrust form */
+[class*="ot-form"] button[type="submit"],
+[class*="ot-web-form"] button[type="submit"],
+.ot-form-btn, .ot-web-form-submit, button.ot-submit-btn {
+  background: var(--ergo-red) !important;
+  color: #fff !important;
+  border: 2px solid transparent !important;
+  border-radius: 999px !important;
+  padding: .8rem 1.6rem !important;
+  font-family: var(--font) !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+[class*="ot-form"] button[type="submit"]:hover,
+.ot-form-btn:hover, .ot-web-form-submit:hover {
+  background: var(--ergo-red-dark) !important;
+}
+
+[class*="ot-form"] a,
+[class*="ot-web-form"] a { color: var(--ergo-red) !important; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 940px) {
   .hero-grid { grid-template-columns: 1fr; gap: 36px; }
@@ -727,24 +811,27 @@ button#ot-sdk-btn {
 <body>
   <a class="skip-link" href="#main">Zum Inhalt springen</a>
 
-  <!-- ===================== HEADER (logged-in) ===================== -->
+  <!-- ============================ HEADER ============================ -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="ERGO Startseite">ERGO</a>
 
       <nav class="main-nav" id="mainNav" aria-label="Hauptnavigation">
-        <a href="index.html#produkte">Versicherungen</a>
-        <a href="index.html#vorsorge">Vorsorge</a>
-        <a href="index.html#service">Service</a>
-        <a href="index.html#ueber-uns">Über uns</a>
+        <a href="#produkte">Versicherungen</a>
+        <a href="#vorsorge">Vorsorge</a>
+        <a href="#service">Service</a>
+        <a href="#ueber-uns">Über uns</a>
       </nav>
 
       <div class="header-actions">
-        <!-- Logged-in state: greeting + avatar with initials -->
-        <span class="user-chip">
-          <span class="avatar" aria-hidden="true">AM<!-- IMAGE → images/avatar.jpg (profile photo; falls back to "AM" initials) --><img src="images/avatar.jpg" alt="" onerror="this.remove()"></span>
-          <span>Hallo, Anuschka Mader</span>
-        </span>
+        <!-- Login / person icon → My Account (relative link) -->
+        <a class="icon-btn" href="account.html" aria-label="Zu Mein Konto anmelden">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M4 20c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <span class="label">Mein Konto</span>
+        </a>
 
         <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mainNav">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -755,199 +842,205 @@ button#ot-sdk-btn {
     </div>
   </header>
 
-  <!-- ===================== ACCOUNT HERO ===================== -->
-  <section class="account-hero">
-    <div class="container">
-      <div class="account-hero-text">
-        <span class="eyebrow">Mein Konto</span>
-        <h1>Willkommen zurück, Anuschka</h1>
-        <p>Hier verwalten Sie Ihre Verträge, Dokumente und Datenschutz-Einstellungen.</p>
-      </div>
-    </div>
-  </section>
-
   <main id="main">
-    <div class="container account-layout">
 
-      <!-- Side sub-navigation -->
-      <nav class="account-nav" aria-label="Kontobereiche">
-        <ul>
-          <li><a class="active" href="#vertraege">Meine Verträge</a></li>
-          <li><a href="#schnellzugriff">Schnellzugriff</a></li>
-          <li><a href="#datenschutz">Einwilligungen &amp; Präferenzen</a></li>
-        </ul>
-      </nav>
-
-      <div class="account-main">
-
-        <!-- ===================== POLICIES ===================== -->
-        <section class="account-section" id="vertraege" aria-labelledby="vertraege-h">
-          <h2 id="vertraege-h">Meine Verträge</h2>
-          <p class="sub">Ihre aktiven Versicherungen auf einen Blick.</p>
-
-          <div class="policy-grid">
-            <!-- Kfz -->
-            <article class="policy-card">
-              <div class="policy-top">
-                <span class="policy-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5M4 13h16v4a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H10a2 2 0 0 1-4 0H5a1 1 0 0 1-1-1v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1" fill="currentColor"/><circle cx="16.5" cy="16" r="1" fill="currentColor"/></svg>
-                </span>
-                <span class="badge badge-active">Aktiv</span>
-              </div>
-              <h3>Kfz-Versicherung</h3>
-              <p class="policy-num">Vertragsnr. KFZ-2024-884 521</p>
-              <div class="policy-meta">
-                <div><span class="k">Tarif</span><span class="v">Komfort, Vollkasko</span></div>
-                <div><span class="k">Beitrag</span><span class="v">39,00 € / Monat</span></div>
-                <div><span class="k">Nächste Fälligkeit</span><span class="v">01.08.2026</span></div>
-              </div>
-              <div class="policy-actions">
-                <a class="btn-ghost" href="#">Details</a>
-                <a class="btn-ghost" href="#">Dokumente</a>
-                <a class="btn-ghost" href="#">Schaden melden</a>
-              </div>
-            </article>
-
-            <!-- Hausrat -->
-            <article class="policy-card">
-              <div class="policy-top">
-                <span class="policy-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6M6 10v9h12v-9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-                </span>
-                <span class="badge badge-active">Aktiv</span>
-              </div>
-              <h3>Hausratversicherung</h3>
-              <p class="policy-num">Vertragsnr. HR-2023-117 049</p>
-              <div class="policy-meta">
-                <div><span class="k">Versicherungssumme</span><span class="v">65.000 €</span></div>
-                <div><span class="k">Beitrag</span><span class="v">14,50 € / Monat</span></div>
-                <div><span class="k">Nächste Fälligkeit</span><span class="v">15.07.2026</span></div>
-              </div>
-              <div class="policy-actions">
-                <a class="btn-ghost" href="#">Details</a>
-                <a class="btn-ghost" href="#">Dokumente</a>
-                <a class="btn-ghost" href="#">Schaden melden</a>
-              </div>
-            </article>
+    <!-- ============================ HERO ============================ -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Versichern heißt verstehen</span>
+          <h1>Versicherungen, die zu Ihrem Leben passen.</h1>
+          <p class="lead">Vom Auto bis zur Altersvorsorge – mit ERGO sind Sie einfach gut abgesichert. Persönlich, digital und immer an Ihrer Seite.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#produkte">Beitrag berechnen</a>
+            <a class="btn btn-outline" href="#service">Beratung vereinbaren</a>
+            <button class="btn btn-ghost" type="button" data-open-offer>Reise-Angebot sichern →</button>
           </div>
-        </section>
+          <p class="hero-claim"><strong>Making insurance easier.</strong> Über 40 Millionen Kundinnen und Kunden vertrauen ERGO weltweit.</p>
+        </div>
 
-        <!-- ===================== QUICK LINKS ===================== -->
-        <section class="account-section" id="schnellzugriff" aria-labelledby="schnell-h">
-          <h2 id="schnell-h">Schnellzugriff</h2>
-          <p class="sub">Die wichtigsten Funktionen direkt zur Hand.</p>
-
-          <div class="quicklinks">
-            <a class="quicklink" href="#">
-              <span class="ql-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3h7l4 4v14H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M13 3v5h5M9 13h6M9 16h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-              <span><strong>Dokumente</strong><span>Policen &amp; Nachweise</span></span>
-            </a>
-            <a class="quicklink" href="#">
-              <span class="ql-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4l9 16H3L12 4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4M12 17h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
-              <span><strong>Schadensmeldung</strong><span>Schnell &amp; online melden</span></span>
-            </a>
-            <a class="quicklink" href="#">
-              <span class="ql-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 20c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
-              <span><strong>Kontaktdaten</strong><span>Adresse &amp; Bankverbindung</span></span>
-            </a>
+        <div class="hero-visual">
+        <!-- IMAGE → images/hero.jpg  (save the ERGO hero/lifestyle photo with this exact name) -->
+        <div class="ph hero-photo">
+          <img src="images/hero.jpg" alt="Zufriedene ERGO Kundin und Kunde" loading="lazy" onerror="this.style.display='none'">
+          <span class="ph-fallback" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M16 8a4 4 0 1 0-8 0M4 20c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+        </div>
+        <aside class="hero-card" aria-label="Beispiel-Angebot">
+          <h3>Ihr Kfz-Beitrag im Blick</h3>
+          <div class="quote-row">
+            <span class="quote-amount">39&nbsp;€</span>
+            <span class="quote-meta">pro Monat<br>Beispieltarif Komfort</span>
           </div>
-        </section>
-
-        <!-- ============================================================= -->
-        <!-- ===== CENTERPIECE: UCPM – Einwilligungen & Präferenzen ===== -->
-        <!-- ============================================================= -->
-        <section class="account-section" id="datenschutz" aria-labelledby="datenschutz-h">
-          <h2 id="datenschutz-h">Kommunikation &amp; Datenschutz</h2>
-          <p class="sub">Legen Sie fest, wie und worüber ERGO Sie kontaktieren darf. Sie können Ihre Einwilligungen jederzeit ändern.</p>
-
-          <div class="consent-card">
-            <div class="consent-head">
-              <h3>Einwilligungen &amp; Präferenzen</h3>
-              <p>Ihre Kommunikationswege und Marketing-Einwilligungen im Überblick.</p>
-            </div>
-
-            <!-- This note documents that the toggles below are placeholders -->
-            <p class="ucpm-note">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8h.01M11 12h1v4h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span><strong>Demo-Hinweis:</strong> Die folgenden Schalter sind ein statischer Platzhalter. Im Live-Betrieb werden diese Präferenzen vom OneTrust&nbsp;UCPM Preference Center im Container unten ausgeliefert und gespeichert.</span>
-            </p>
-
-            <!-- ============================================================= -->
-            <!-- ONETRUST UCPM: embed preference center / collection point.    -->
-            <!-- The real, consent-bearing UI renders into this empty div.     -->
-            <!-- Once UCPM is live, REMOVE the placeholder <ul.toggle-list>     -->
-            <!-- and <div.consent-foot> below so they don't duplicate it.      -->
-            <!-- ============================================================= -->
-            <div id="onetrust-pc-embed"></div>
-
-            <!-- ▼▼▼ PLACEHOLDER UI ONLY – replaced by UCPM widget above ▼▼▼ -->
-            <ul class="toggle-list">
-              <li class="toggle-row">
-                <span class="t-text">
-                  <strong>E-Mail-Marketing</strong>
-                  <span>Angebote, Tipps und Neuigkeiten per E-Mail.</span>
-                </span>
-                <label class="toggle">
-                  <input type="checkbox" checked aria-label="E-Mail-Marketing erlauben">
-                  <span class="toggle-track" aria-hidden="true"></span>
-                </label>
-              </li>
-              <li class="toggle-row">
-                <span class="t-text">
-                  <strong>SMS</strong>
-                  <span>Wichtige Hinweise und Aktionen per SMS.</span>
-                </span>
-                <label class="toggle">
-                  <input type="checkbox" aria-label="SMS erlauben">
-                  <span class="toggle-track" aria-hidden="true"></span>
-                </label>
-              </li>
-              <li class="toggle-row">
-                <span class="t-text">
-                  <strong>Telefon</strong>
-                  <span>Persönliche Beratung und Angebote per Telefon.</span>
-                </span>
-                <label class="toggle">
-                  <input type="checkbox" aria-label="Telefon erlauben">
-                  <span class="toggle-track" aria-hidden="true"></span>
-                </label>
-              </li>
-              <li class="toggle-row">
-                <span class="t-text">
-                  <strong>Personalisierte Angebote</strong>
-                  <span>Auf Sie zugeschnittene Empfehlungen auf Basis Ihrer Verträge.</span>
-                </span>
-                <label class="toggle">
-                  <input type="checkbox" checked aria-label="Personalisierte Angebote erlauben">
-                  <span class="toggle-track" aria-hidden="true"></span>
-                </label>
-              </li>
-              <li class="toggle-row">
-                <span class="t-text">
-                  <strong>Newsletter</strong>
-                  <span>Monatlicher ERGO Newsletter mit Vorsorge- und Service-Themen.</span>
-                </span>
-                <label class="toggle">
-                  <input type="checkbox" aria-label="Newsletter abonnieren">
-                  <span class="toggle-track" aria-hidden="true"></span>
-                </label>
-              </li>
-            </ul>
-
-            <div class="consent-foot">
-              <p class="saved-hint">Letzte Aktualisierung: 12.06.2026</p>
-              <button class="btn btn-primary" type="button" id="savePrefs">Einstellungen speichern</button>
-            </div>
-            <!-- ▲▲▲ END PLACEHOLDER UI ▲▲▲ -->
-          </div>
-        </section>
-
+          <ul class="mini-list">
+            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Haftpflicht, Teil- &amp; Vollkasko</li>
+            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Schadenservice rund um die Uhr</li>
+            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Werkstattbindung optional</li>
+          </ul>
+          <a class="btn btn-primary" href="#produkte" style="width:100%; justify-content:center;">Jetzt berechnen</a>
+        </aside>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ======================== PRODUCT GRID ======================== -->
+    <section class="section" id="produkte">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Unsere Versicherungen</span>
+          <h2>Für jede Lebenslage die passende Absicherung</h2>
+          <p>Stellen Sie sich Ihren Schutz so zusammen, wie Sie ihn brauchen – transparent und ohne Kleingedrucktes.</p>
+        </div>
+
+        <div class="product-grid">
+          <!-- Kfz -->
+          <a class="product-card" href="#produkte">
+            <!-- IMAGE → images/kfz.jpg  (save the matching ERGO photo with this exact name) -->
+            <div class="ph card-media">
+              <img src="images/kfz.jpg" alt="Auto auf einer Straße" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="pc-body">
+            <span class="product-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 13l2-5a2 2 0 0 1 1.9-1.3h10.2A2 2 0 0 1 19 8l2 5M4 13h16v4a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H10a2 2 0 0 1-4 0H5a1 1 0 0 1-1-1v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.5" cy="16" r="1" fill="currentColor"/><circle cx="16.5" cy="16" r="1" fill="currentColor"/></svg>
+            </span>
+            <h3>Kfz-Versicherung</h3>
+            <p>Haftpflicht, Teil- und Vollkasko – flexibel kombinierbar und mit Top-Schadenservice.</p>
+            <span class="more">Mehr erfahren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          </a>
+
+          <!-- Hausrat -->
+          <a class="product-card" href="#produkte">
+            <!-- IMAGE → images/hausrat.jpg  (save the matching ERGO photo with this exact name) -->
+            <div class="ph card-media">
+              <img src="images/hausrat.jpg" alt="Modernes Wohnhaus" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="pc-body">
+            <span class="product-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 11l8-6 8 6M6 10v9h12v-9" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Hausratversicherung</h3>
+            <p>Schutz für Möbel, Technik und Wertsachen – bei Einbruch, Feuer, Wasser und Sturm.</p>
+            <span class="more">Mehr erfahren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          </a>
+
+          <!-- Leben -->
+          <a class="product-card" href="#vorsorge">
+            <!-- IMAGE → images/leben.jpg  (save the matching ERGO photo with this exact name) -->
+            <div class="ph card-media">
+              <img src="images/leben.jpg" alt="Familie zu Hause" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="pc-body">
+            <span class="product-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.4-7-9.5A4 4 0 0 1 12 7a4 4 0 0 1 7 3.5C19 15.6 12 20 12 20Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Lebensversicherung</h3>
+            <p>Finanzielle Sicherheit für Ihre Familie und eine verlässliche Vorsorge fürs Alter.</p>
+            <span class="more">Mehr erfahren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          </a>
+
+          <!-- Kranken -->
+          <a class="product-card" href="#produkte">
+            <!-- IMAGE → images/kranken.jpg  (save the matching ERGO photo with this exact name) -->
+            <div class="ph card-media">
+              <img src="images/kranken.jpg" alt="Ärztin im Beratungsgespräch" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="pc-body">
+            <span class="product-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </span>
+            <h3>Krankenversicherung</h3>
+            <p>Zusatzschutz für Zähne, Klinik und Vorsorge – damit Sie sich gut versorgt fühlen.</p>
+            <span class="more">Mehr erfahren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          </a>
+
+          <!-- Rechtsschutz -->
+          <a class="product-card" href="#produkte">
+            <!-- IMAGE → images/rechtsschutz.jpg  (save the matching ERGO photo with this exact name) -->
+            <div class="ph card-media">
+              <img src="images/rechtsschutz.jpg" alt="Beratung im Büro" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="pc-body">
+            <span class="product-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v16M5 8h14M7 8l-3 6a3 3 0 0 0 6 0L7 8Zm10 0l-3 6a3 3 0 0 0 6 0l-3-6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Rechtsschutzversicherung</h3>
+            <p>Im Recht bleiben ohne Kostenrisiko – privat, beruflich und im Straßenverkehr.</p>
+            <span class="more">Mehr erfahren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          </a>
+
+          <!-- Reise -->
+          <a class="product-card" href="#produkte">
+            <!-- IMAGE → images/reise.jpg  (save the matching ERGO photo with this exact name) -->
+            <div class="ph card-media">
+              <img src="images/reise.jpg" alt="Reisende mit Koffer" loading="lazy" onerror="this.style.display='none'">
+            </div>
+            <div class="pc-body">
+            <span class="product-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 16l18-6-3-3-4 1-6-5-2 1 3 5-4 1-2-2-1 1 3 4 5 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Reiseversicherung</h3>
+            <p>Sorgenfrei verreisen mit Reiserücktritt, Auslandskranken- und Gepäckschutz.</p>
+            <span class="more">Mehr erfahren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================== TRUST STRIP ======================== -->
+    <section class="section section-grey" id="service">
+      <div class="container">
+        <div class="section-head center">
+          <span class="eyebrow">Warum ERGO</span>
+          <h2>Vertrauen, das sich auszahlt</h2>
+        </div>
+        <div class="trust-grid">
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <h3>Stark im Schadenfall</h3>
+            <p>Schnelle, faire Regulierung – darauf können Sie sich verlassen.</p>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <h3>24/7 erreichbar</h3>
+            <p>Service rund um die Uhr – online, telefonisch und vor Ort.</p>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 11a7 7 0 0 1 14 0v4a3 3 0 0 1-3 3h-1" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="11" width="3" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="18" y="11" width="3" height="6" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            <h3>Persönliche Beratung</h3>
+            <p>Über 7.000 Beraterinnen und Berater in Ihrer Nähe.</p>
+          </div>
+          <div class="trust-item">
+            <span class="trust-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M16 8a4 4 0 1 0-8 0M4 19c0-2.5 3.6-4 8-4s8 1.5 8 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M12 3v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+            <h3>Faire Beiträge</h3>
+            <p>Transparente Tarife und Rabatte, die sich für Sie rechnen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================= CTA BAND ========================= -->
+    <section class="section" id="vorsorge">
+      <div class="container">
+        <div class="cta-band">
+          <!-- IMAGE → images/vorsorge.jpg  (subtle background photo) -->
+          <div class="cta-bg" aria-hidden="true"><img src="images/vorsorge.jpg" alt="" loading="lazy" onerror="this.style.display='none'"></div>
+          <div>
+            <h2>Schon an morgen gedacht?</h2>
+            <p>Sichern Sie sich mit ERGO Vorsorge entspannt für die Zukunft ab.</p>
+          </div>
+          <a class="btn btn-primary" href="account.html">Mein Konto öffnen</a>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- ============================ FOOTER ============================ -->
-  <footer class="site-footer">
+  <footer class="site-footer" id="ueber-uns">
     <div class="container">
       <div class="footer-grid">
         <div>
@@ -955,28 +1048,30 @@ button#ot-sdk-btn {
           <p class="footer-tagline">Versichern heißt verstehen. ERGO – einer der großen Versicherer in Deutschland und Europa.</p>
         </div>
         <div class="footer-col">
-          <h4>Mein Konto</h4>
+          <h4>Versicherungen</h4>
           <ul>
-            <li><a href="#vertraege">Meine Verträge</a></li>
-            <li><a href="#schnellzugriff">Dokumente</a></li>
-            <li><a href="#datenschutz">Einwilligungen</a></li>
-            <li><a href="index.html">Zur Startseite</a></li>
+            <li><a href="#produkte">Kfz-Versicherung</a></li>
+            <li><a href="#produkte">Hausratversicherung</a></li>
+            <li><a href="#produkte">Lebensversicherung</a></li>
+            <li><a href="#produkte">Krankenversicherung</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Service</h4>
           <ul>
-            <li><a href="index.html#service">Schaden melden</a></li>
-            <li><a href="index.html#service">Kontakt</a></li>
-            <li><a href="index.html#service">Häufige Fragen</a></li>
+            <li><a href="account.html">Mein Konto</a></li>
+            <li><a href="#service">Schaden melden</a></li>
+            <li><a href="#service">Kontakt</a></li>
+            <li><a href="#service">Häufige Fragen</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <h4>Unternehmen</h4>
           <ul>
-            <li><a href="index.html#ueber-uns">Über uns</a></li>
-            <li><a href="index.html#ueber-uns">Karriere</a></li>
-            <li><a href="index.html#ueber-uns">Presse</a></li>
+            <li><a href="#ueber-uns">Über uns</a></li>
+            <li><a href="#ueber-uns">Karriere</a></li>
+            <li><a href="#ueber-uns">Presse</a></li>
+            <li><a href="#ueber-uns">Nachhaltigkeit</a></li>
           </ul>
         </div>
       </div>
@@ -988,7 +1083,8 @@ button#ot-sdk-btn {
           <a href="#">Datenschutz</a>
           <!-- ============================================================= -->
           <!-- ONETRUST CMP TRIGGER: opens the Preference Center.            -->
-          <!-- Same standard hooks as on index.html.                        -->
+          <!-- id + class are the OneTrust standard hooks; the onclick is a  -->
+          <!-- fallback. No code change needed once the CMP script is live.  -->
           <!-- ============================================================= -->
           <button id="ot-sdk-btn" class="ot-sdk-show-settings"
                   onclick="if(window.OneTrust){OneTrust.ToggleInfoDisplay();}return false;">
@@ -999,32 +1095,94 @@ button#ot-sdk-btn {
     </div>
   </footer>
 
+  <!-- ============================================================= -->
+  <!-- OFFER POPUP – OneTrust UCPM collection-point demo.             -->
+  <!-- Opens automatically (see AUTO_OPEN in the script) and via any  -->
+  <!-- element carrying the data-open-offer attribute.                -->
+  <!-- ============================================================= -->
+  <div class="modal-overlay" id="offerModal" role="dialog" aria-modal="true" aria-labelledby="offerTitle" aria-hidden="true">
+    <div class="modal">
+      <button class="modal-close" type="button" data-close-offer aria-label="Schließen">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+
+      <!-- IMAGE → images/reise.jpg  (optional banner; the gradient shows if absent) -->
+      <div class="ph modal-banner">
+        <img src="images/reise.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+      </div>
+
+      <div class="modal-body">
+        <span class="eyebrow">Reiseversicherung</span>
+        <h2 id="offerTitle">Sicher verreisen – 10&nbsp;% Willkommensrabatt</h2>
+        <p class="modal-sub">Fordern Sie Ihr persönliches Angebot zur Reiseversicherung an – sicher und DSGVO-konform.</p>
+
+        <!-- ============================================================= -->
+        <!-- ONETRUST WEB FORM                                             -->
+        <!-- The name / e-mail / consent fields were removed: the real     -->
+        <!-- form is served by OneTrust. Clicking the button below (class  -->
+        <!-- "ot-open-webform") shows the collection-point web form.       -->
+        <!-- id = the collection-point ID (the stray "ot-" prefix removed).-->
+        <!-- The form is skinned to match this popup via the OneTrust      -->
+        <!-- override CSS in the stylesheet.                               -->
+        <!-- ============================================================= -->
+        <button class="ot-open-webform btn btn-primary"
+                id="b90a1a08-78df-4be5-ac3d-2721a404430d"
+                style="width:100%; justify-content:center;">Angebot anfordern</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ===================== Demo-only vanilla JS ===================== -->
   <script>
-    // Mobile nav toggle
+    // Mobile nav toggle (no framework)
     (function () {
       var btn = document.getElementById('navToggle');
       var nav = document.getElementById('mainNav');
-      if (btn && nav) {
-        btn.addEventListener('click', function () {
-          var open = nav.classList.toggle('open');
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-          btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-        });
-      }
+      if (!btn || !nav) return;
+      btn.addEventListener('click', function () {
+        var open = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+      });
+      nav.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') nav.classList.remove('open');
+      });
     })();
 
-    // Placeholder "save" feedback – purely cosmetic for the demo.
-    // Remove once the UCPM widget handles persistence itself.
+    // Offer popup (OneTrust collection-point demo)
     (function () {
-      var save = document.getElementById('savePrefs');
-      if (!save) return;
-      save.addEventListener('click', function () {
-        var original = save.textContent;
-        save.textContent = 'Gespeichert ✓';
-        save.disabled = true;
-        setTimeout(function () { save.textContent = original; save.disabled = false; }, 1800);
+      var overlay = document.getElementById('offerModal');
+      if (!overlay) return;
+
+      var AUTO_OPEN = true;         // set to false to disable the timed auto-open
+      var AUTO_OPEN_DELAY = 3000;   // milliseconds before it pops
+      var lastFocus = null, opened = false;
+
+      function open() {
+        lastFocus = document.activeElement;
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        var first = overlay.querySelector('input, button');
+        if (first) first.focus();
+      }
+      function close() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        if (lastFocus && lastFocus.focus) lastFocus.focus();
+      }
+
+      document.querySelectorAll('[data-open-offer]').forEach(function (el) {
+        el.addEventListener('click', function (e) { e.preventDefault(); open(); });
       });
+      overlay.querySelectorAll('[data-close-offer]').forEach(function (el) {
+        el.addEventListener('click', close);
+      });
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) close();
+      });
+
+      if (AUTO_OPEN) setTimeout(function () { if (!opened) { opened = true; open(); } }, AUTO_OPEN_DELAY);
     })();
   </script>
 </body>
