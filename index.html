@@ -750,6 +750,54 @@ button#ot-sdk-btn {
 #ot-container input[type="checkbox"],
 #ot-container input[type="radio"] { width: auto !important; }
 
+/* Pull the form up — remove the empty gap between the subtext and the fields.
+   Zeroes top spacing on the form + its topmost wrappers and kills any tall
+   min-heights that were reserving vertical space. */
+#ot-container { margin-top: -6px !important; overflow-x: hidden !important; }
+#ot-container,
+#ot-container form,
+#ot-container fieldset,
+#ot-container section,
+#ot-container div { min-height: 0 !important; }
+#ot-container > *,
+#ot-container form,
+#ot-container fieldset,
+#ot-container section,
+#ot-container > *:first-child,
+#ot-container form > *:first-child,
+#ot-container fieldset > *:first-child,
+#ot-container div[class*="container"],
+#ot-container div[class*="wrapper"],
+#ot-container div[class*="form"] {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Keep fields inside the popup on BOTH sides (fix left/right cut-off):
+   neutralise any negative side-margins or over-widths OneTrust applies. */
+#ot-container *,
+#ot-container form,
+#ot-container fieldset,
+#ot-container section,
+#ot-container div { max-width: 100% !important; }
+#ot-container form,
+#ot-container fieldset,
+#ot-container section,
+#ot-container div[class*="container"],
+#ot-container div[class*="wrapper"],
+#ot-container div[class*="form"] {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+#ot-container input,
+#ot-container select,
+#ot-container textarea {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
 /* Submit button: keep only the full-width pill shape + font (colour via OneTrust) */
 #ot-container button,
 #ot-container input[type="submit"],
@@ -1214,4 +1262,9 @@ button#ot-sdk-btn {
 </body>
 </html>
 
+Anuschka Theresa Mader
+Senior Solutions Engineer
+anuschka.mader@onetrust.com
++34 603 600 677 
+OneTrust.com 
 Pl. Pablo Ruiz Picasso 11, 28020 Madrid, Spain 
