@@ -702,24 +702,36 @@ button#ot-sdk-btn {
 .modal-success h2 { margin-bottom: .3rem; }
 [hidden] { display: none !important; }
 
-/* ---------- OneTrust web form – skin to match the ERGO popup ---------- */
-/* The collection-point form renders inline into #ot-container, so every
-   override is scoped to that mount. This strips OneTrust's default bordered
-   "card" and restyles inputs, the consent checkbox and the submit button to
-   the ERGO look. Scoping by #ot-container (not class names) keeps it robust. */
+/* ---------- OneTrust web form – structure & font only ---------- */
+/* Scoped to #ot-container (where OneTrust renders the form inline).
+   NO colors are set here — the palette (button colour, borders, etc.) is
+   configured in OneTrust directly. This block only:
+     • keeps the ERGO font,
+     • keeps the outer form card borderless (as approved),
+     • keeps every field full-width and inside the popup (box-sizing fix,
+       so the Name/E-mail boxes are no longer cut off on the right). */
 
-#ot-container { font-family: var(--font) !important; color: var(--ink) !important; }
+/* Font everywhere (keep the current font) */
+#ot-container,
+#ot-container * { font-family: var(--font) !important; }
 
-/* Remove the bordered card around the form (containers only — never inputs/buttons) */
+/* border-box on everything so padded inputs never overflow the popup */
+#ot-container *,
+#ot-container *::before,
+#ot-container *::after { box-sizing: border-box !important; }
+
+/* Keep the outer form card borderless. Only wrapper <div>s / form / fieldset
+   are targeted (via div[...]), so inputs & the button are never touched —
+   OneTrust keeps full control of their colours. */
 #ot-container,
 #ot-container form,
 #ot-container fieldset,
 #ot-container section,
 #ot-container > div,
 #ot-container > div > div,
-#ot-container [class*="container"],
-#ot-container [class*="wrapper"],
-#ot-container [class*="form"] {
+#ot-container div[class*="container"],
+#ot-container div[class*="wrapper"],
+#ot-container div[class*="form"] {
   border: none !important;
   box-shadow: none !important;
   background: transparent !important;
@@ -727,63 +739,29 @@ button#ot-sdk-btn {
 #ot-container form,
 #ot-container fieldset { margin: 0 !important; padding: 0 !important; }
 
-/* Labels */
-#ot-container label {
-  font-family: var(--font) !important;
-  color: var(--ink) !important;
-}
-
-/* Text / e-mail inputs */
-#ot-container input[type="text"],
-#ot-container input[type="email"],
-#ot-container input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]) {
+/* Fields: full width and contained so nothing is cut off on the right.
+   No colours/borders here — OneTrust controls those. */
+#ot-container input,
+#ot-container select,
+#ot-container textarea {
   width: 100% !important;
-  font-family: var(--font) !important;
-  font-size: 1rem !important;
-  padding: 12px 14px !important;
-  border: 1px solid var(--grey-line) !important;
-  border-radius: 10px !important;
-  background: var(--white) !important;
-  color: var(--ink) !important;
-  box-shadow: none !important;
+  max-width: 100% !important;
 }
-#ot-container input:focus {
-  outline: 3px solid var(--ergo-red) !important;
-  outline-offset: 2px !important;
-  border-color: var(--ergo-red) !important;
-}
+#ot-container input[type="checkbox"],
+#ot-container input[type="radio"] { width: auto !important; }
 
-/* Consent checkbox */
-#ot-container input[type="checkbox"] {
-  accent-color: var(--ergo-red) !important;
-  width: 18px !important; height: 18px !important;
-}
-
-/* Submit button → ERGO-red pill, full width */
+/* Submit button: keep only the full-width pill shape + font (colour via OneTrust) */
 #ot-container button,
 #ot-container input[type="submit"],
 #ot-container [type="submit"] {
   width: 100% !important;
-  background: var(--ergo-red) !important;
-  color: #fff !important;
-  border: none !important;
+  max-width: 100% !important;
   border-radius: 999px !important;
   padding: .85rem 1.6rem !important;
   font-family: var(--font) !important;
   font-weight: 600 !important;
-  font-size: 1rem !important;
   cursor: pointer !important;
-  box-shadow: none !important;
-  margin-top: 8px !important;
 }
-#ot-container button:hover,
-#ot-container input[type="submit"]:hover,
-#ot-container [type="submit"]:hover {
-  background: var(--ergo-red-dark) !important;
-}
-
-/* Links inside the form */
-#ot-container a { color: var(--ergo-red) !important; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 940px) {
@@ -880,19 +858,18 @@ button#ot-sdk-btn {
         <div class="hero-visual">
         <!-- IMAGE → images/hero.jpg  (save the ERGO hero/lifestyle photo with this exact name) -->
         <div class="ph hero-photo">
-          <img src="images/hero.jpg" alt="Zufriedene ERGO Kundin und Kunde" loading="lazy" onerror="this.style.display='none'">
-          <span class="ph-fallback" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M16 8a4 4 0 1 0-8 0M4 20c0-3.3 3.6-5.5 8-5.5s8 2.2 8 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <img src="images/hero.jpg" alt="Reisende genießen den Sonnenuntergang" loading="lazy" onerror="this.style.display='none'">
         </div>
         <aside class="hero-card" aria-label="Beispiel-Angebot">
-          <h3>Ihr Kfz-Beitrag im Blick</h3>
+          <h3>Ihr Reiseschutz im Blick</h3>
           <div class="quote-row">
-            <span class="quote-amount">39&nbsp;€</span>
-            <span class="quote-meta">pro Monat<br>Beispieltarif Komfort</span>
+            <span class="quote-amount">29&nbsp;€</span>
+            <span class="quote-meta">pro Jahr<br>Beispieltarif Komplett</span>
           </div>
           <ul class="mini-list">
-            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Haftpflicht, Teil- &amp; Vollkasko</li>
-            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Schadenservice rund um die Uhr</li>
-            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Werkstattbindung optional</li>
+            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Reiserücktritt &amp; Reiseabbruch</li>
+            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Weltweiter Auslandskrankenschutz</li>
+            <li><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> 24/7 Notfall-Hotline weltweit</li>
           </ul>
           <a class="btn btn-primary" href="#produkte" style="width:100%; justify-content:center;">Jetzt berechnen</a>
         </aside>
@@ -1132,7 +1109,7 @@ button#ot-sdk-btn {
       <div class="modal-body">
         <span class="eyebrow">Reiseversicherung</span>
         <h2 id="offerTitle">Sicher verreisen – 10&nbsp;% Willkommensrabatt</h2>
-        <p class="modal-sub">Fordern Sie Ihr persönliches Angebot zur Reiseversicherung an – sicher und DSGVO-konform.</p>
+        <p class="modal-sub">Tragen Sie Ihre Kontaktdaten ein und wir senden Ihnen Ihr persönliches Angebot zur Reiseversicherung.</p>
 
         <!-- ============================================================= -->
         <!-- ONETRUST WEB FORM (UCPM collection point)                     -->
@@ -1236,5 +1213,5 @@ button#ot-sdk-btn {
   <!-- ===== END: OneTrust web form install ===== -->
 </body>
 </html>
- 
+
 Pl. Pablo Ruiz Picasso 11, 28020 Madrid, Spain 
