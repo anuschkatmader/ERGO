@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -704,32 +703,41 @@ button#ot-sdk-btn {
 [hidden] { display: none !important; }
 
 /* ---------- OneTrust web form – skin to match the ERGO popup ---------- */
-/* The collection-point form is injected by OneTrust at runtime, so its
-   markup isn't visible here. These rules target OneTrust's typical
-   embedded-form wrappers + generic form elements and restyle them to match
-   the popup (rounded inputs, pill ERGO-red button, brand fonts/links).
-   If your rendered form uses different class names, inspect it and adjust
-   the selectors below. */
-[class*="ot-form"],
-[class*="ot-web-form"],
-.ot-sdk-container[role="dialog"] {
+/* The collection-point form renders inline into #ot-container, so every
+   override is scoped to that mount. This strips OneTrust's default bordered
+   "card" and restyles inputs, the consent checkbox and the submit button to
+   the ERGO look. Scoping by #ot-container (not class names) keeps it robust. */
+
+#ot-container { font-family: var(--font) !important; color: var(--ink) !important; }
+
+/* Remove the bordered card around the form (containers only — never inputs/buttons) */
+#ot-container,
+#ot-container form,
+#ot-container fieldset,
+#ot-container section,
+#ot-container > div,
+#ot-container > div > div,
+#ot-container [class*="container"],
+#ot-container [class*="wrapper"],
+#ot-container [class*="form"] {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+#ot-container form,
+#ot-container fieldset { margin: 0 !important; padding: 0 !important; }
+
+/* Labels */
+#ot-container label {
   font-family: var(--font) !important;
   color: var(--ink) !important;
-  border-radius: var(--radius-lg) !important;
 }
 
-[class*="ot-form"] h1, [class*="ot-form"] h2,
-[class*="ot-web-form"] h1, [class*="ot-web-form"] h2 {
-  font-family: var(--font) !important;
-  color: var(--ink) !important;
-  letter-spacing: -0.01em !important;
-}
-
-[class*="ot-form"] input[type="text"],
-[class*="ot-form"] input[type="email"],
-[class*="ot-web-form"] input[type="text"],
-[class*="ot-web-form"] input[type="email"],
-input.ot-input-txt {
+/* Text / e-mail inputs */
+#ot-container input[type="text"],
+#ot-container input[type="email"],
+#ot-container input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]) {
+  width: 100% !important;
   font-family: var(--font) !important;
   font-size: 1rem !important;
   padding: 12px 14px !important;
@@ -739,39 +747,43 @@ input.ot-input-txt {
   color: var(--ink) !important;
   box-shadow: none !important;
 }
-[class*="ot-form"] input:focus,
-[class*="ot-web-form"] input:focus {
+#ot-container input:focus {
   outline: 3px solid var(--ergo-red) !important;
   outline-offset: 2px !important;
   border-color: var(--ergo-red) !important;
 }
 
-[class*="ot-form"] input[type="checkbox"],
-[class*="ot-web-form"] input[type="checkbox"] {
+/* Consent checkbox */
+#ot-container input[type="checkbox"] {
   accent-color: var(--ergo-red) !important;
-  width: 17px !important; height: 17px !important;
+  width: 18px !important; height: 18px !important;
 }
 
-/* submit / primary buttons inside the OneTrust form */
-[class*="ot-form"] button[type="submit"],
-[class*="ot-web-form"] button[type="submit"],
-.ot-form-btn, .ot-web-form-submit, button.ot-submit-btn {
+/* Submit button → ERGO-red pill, full width */
+#ot-container button,
+#ot-container input[type="submit"],
+#ot-container [type="submit"] {
+  width: 100% !important;
   background: var(--ergo-red) !important;
   color: #fff !important;
-  border: 2px solid transparent !important;
+  border: none !important;
   border-radius: 999px !important;
-  padding: .8rem 1.6rem !important;
+  padding: .85rem 1.6rem !important;
   font-family: var(--font) !important;
   font-weight: 600 !important;
+  font-size: 1rem !important;
   cursor: pointer !important;
+  box-shadow: none !important;
+  margin-top: 8px !important;
 }
-[class*="ot-form"] button[type="submit"]:hover,
-.ot-form-btn:hover, .ot-web-form-submit:hover {
+#ot-container button:hover,
+#ot-container input[type="submit"]:hover,
+#ot-container [type="submit"]:hover {
   background: var(--ergo-red-dark) !important;
 }
 
-[class*="ot-form"] a,
-[class*="ot-web-form"] a { color: var(--ergo-red) !important; }
+/* Links inside the form */
+#ot-container a { color: var(--ergo-red) !important; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 940px) {
@@ -1224,4 +1236,5 @@ input.ot-input-txt {
   <!-- ===== END: OneTrust web form install ===== -->
 </body>
 </html>
- 11, 28020 Madrid, Spain 
+ 
+Pl. Pablo Ruiz Picasso 11, 28020 Madrid, Spain 
